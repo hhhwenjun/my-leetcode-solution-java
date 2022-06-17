@@ -1,32 +1,34 @@
 class Solution {
-    List<List<Integer>> res;
     int[] candidates;
-    int target;
+    List<List<Integer>> res;
     
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        res = new ArrayList<>();
         this.candidates = candidates;
-        this.target = target;
-        backtracking(0, target, new ArrayList<Integer>());
+        res = new ArrayList<>();
+        
+        // use backtracking solution
+        backtracking(0, target, new ArrayList<>());
         return res;
     }
     
-    // backtracking:
-    // recursion, keep subtract target by the candidates, reach 0, find a combination
-    public void backtracking(int start, int target, List<Integer> singleComb){
-        // base case
+    // realize the backtracking process
+    public void backtracking(int index, int target, List<Integer> singleResult){
+        // base case: reach target
         if (target == 0){
-            res.add(new ArrayList(singleComb));
+            res.add(new ArrayList(singleResult));
             return;
         }
-        // base case: but not meet the requirement
-        if (target < 0 || start == candidates.length){
+        
+        // other base case: reach the end of given array or cannot get target
+        if (target < 0 || index == candidates.length){
             return;
         }
-        for (int i = start; i < candidates.length; i++){
-            singleComb.add(candidates[i]);
-            backtracking(i, target - candidates[i], singleComb);
-            singleComb.remove(singleComb.size() - 1);
+        
+        // backtracking core
+        for (int i = index; i < candidates.length; i++){
+            singleResult.add(candidates[i]);
+            backtracking(i, target - candidates[i], singleResult);
+            singleResult.remove(singleResult.size() - 1);
         }
     }
 }
