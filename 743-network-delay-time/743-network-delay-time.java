@@ -11,9 +11,9 @@ class Solution {
         }
         
         // sort the edges connecting to every node
-        // for (int node : adjList.keySet()){
-        //     Collections.sort(adjList.get(node), (a, b) -> a[1] - b[1]);
-        // }
+        for (int node : adjList.keySet()){
+            Collections.sort(adjList.get(node), (a, b) -> a[1] - b[1]);
+        }
         
         // start from the source node, traverse the adjacency list and + 1 for time in each traversal
         int[] signalReceivedTime = new int[n + 1];
