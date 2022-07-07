@@ -1,65 +1,77 @@
 class Solution {
-    // abstract: return longest consecutive sequence in o(n)
-    // union-find to group the number that are consecutive |a - b| = 1
     public int longestConsecutive(int[] nums) {
-        int length = nums.length;
-        UnionFind uf = new UnionFind(length);
-        // key: number in nums, value: index of number in nums
-        Map<Integer, Integer> map = new HashMap<>();
-        
-        for (int i = 0; i < length; i++){
-            if (map.containsKey(nums[i])){
-                continue;
+        // map to store the number and index, union-find to group the numbers
+        Map<Integer, Integer> numMap = new HashMap<>();
+        UnionFind uf = new UnionFind(nums.length);
+        for (int i = 0; i < nums.length; i++){
+            int curr = nums[i];
+            // in case duplicate
+            if (numMap.containsKey(curr)) continue;
+            // if map has consecutive elements for curr element
+            if (numMap.containsKey(curr - 1)){
+                uf.union(i, numMap.get(curr - 1));
             }
-            if (map.containsKey(nums[i] - 1)){
-                uf.union(i, map.get(nums[i] - 1));
+            if (numMap.containsKey(curr + 1)){
+                uf.union(i, numMap.get(curr + 1));
             }
-            if (map.containsKey(nums[i] + 1)){
-                uf.union(i, map.get(nums[i] + 1));
-            }
-            map.put(nums[i], i);
+            numMap.put(curr, i);
         }
-        return uf.getMaxSeqSize();
+        return uf.size();
     }
 }
 
-// create union-find class
 class UnionFind {
     private int[] group;
     private int[] rank;
+    private int[] size;
     
-    public UnionFind(int size){
-        group = new int[size];
-        rank = new int[size];
-        
-        for (int i = 0; i < size; i++){
+    public UnionFind(int n){
+        group = new int[n];
+        rank = new int[n];
+        size = new int[n];
+        for (int i = 0; i < n; i++){
             group[i] = i;
             rank[i] = 1;
+            size[i] = 1;
         }
     }
     
-    public int find(int index){
-        if (group[index] != index){
-            group[index] = find(group[index]);
+    public int find(int node){
+        if (node != group[node]){
+            group[node] = find(group[node]);
         }
-        return group[index];
+        return group[node];
     }
     
-    public void union(int index1, int index2){
-        int root1 = find(index1);
-        int root2 = find(index2);
+    public int size(){
+        int maxsize = 0;
+        for (int i = 0; i < size.length; i++){
+            maxsize = Math.max(maxsize, size[i]);
+        }
+        return maxsize;
+    }
+    
+    public boolean union(int i, int j){
+        int root1 = find(i);
+        int root2 = find(j);
         
-        if (root1 != root2){
-            group[root1] = root2;
-            rank[root2] += rank[root1];
+        if (root1 == root2){
+            // already in same group
+            return false;
         }
-    }
-    
-    public int getMaxSeqSize(){
-        int maxSize = 0;
-        for (int singleRank : rank){
-            maxSize = Math.max(maxSize, singleRank);
+        if (rank[root1] > rank[root2]){
+            group[root2] = group[root1];
+            size[root1] += size[root2];
         }
-        return maxSize;
+        else if (rank[root2] > rank[root1]){
+            group[root1] = group[root2];
+            size[root2] += size[root1];
+        }
+        else {
+            group[root1] = group[root2];
+            rank[root2]++;
+            size[root2] += size[root1];
+        }
+        return true;
     }
 }
