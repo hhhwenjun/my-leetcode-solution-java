@@ -36,19 +36,11 @@ class Solution {
         // traverse the rest of the longer list
         if (curr1 == null){
             // to the list2
-            while(curr2 != null){
-                currMerged.next = curr2;
-                currMerged = currMerged.next;
-                curr2 = curr2.next;
-            }
+            currMerged.next = curr2;
         }
         else {
             // to the list1
-            while(curr1 != null){
-                currMerged.next = curr1;
-                currMerged = currMerged.next;
-                curr1 = curr1.next;
-            }
+            currMerged.next = curr1;
         }
         return dummyHead.next;
     }
