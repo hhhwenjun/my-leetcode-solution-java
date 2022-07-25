@@ -29,7 +29,11 @@ class Solution {
         }
         // 3. add 1 to area if the current cell has value 1
         grid[i][j] = 0;
+        int area = 1;
         // find neighbor islands in 4 directions
-        return 1 + dfs(i + 1, j) + dfs(i - 1, j) + dfs(i, j - 1) + dfs(i, j + 1);
+        for (int[] direction : directions){
+            area += dfs(i + direction[0], j + direction[1]);
+        }
+        return area;
     }
 }
