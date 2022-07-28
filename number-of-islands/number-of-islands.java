@@ -1,39 +1,35 @@
 class Solution {
-    int[][] directions = new int[][]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
-    boolean[][] visited;
+    int[][] directions = new int[][]{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
     char[][] grid;
     
     public int numIslands(char[][] grid) {
-        
-        // 2. finish the traversal, add 1 to num of islands, move to next cell
-        int height = grid.length;
-        int width = grid[0].length;
-        visited = new boolean[height][width];
+        // 1. dfs problem: nested for loop for each cell to check if it is 1
         this.grid = grid;
-        
-        // 1. visited array to record, queue to traverse the matrix (dfs)
-        // traverse whole matrix, go through each cells
-        int numOfIslands = 0;
-        for (int i = 0; i < height; i++){
-            for (int j = 0; j < width; j++){
-                if (!visited[i][j] && grid[i][j] == '1'){
+        int m = grid.length;
+        int n = grid[0].length;
+        int num = 0; // number of islands
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                if (grid[i][j] == '1'){
                     dfs(i, j);
-                    numOfIslands++;
+                    num++;
                 }
             }
         }
-        return numOfIslands;
+        return num;
     }
     
     public void dfs(int i, int j){
-        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || visited[i][j]){
+        // if the loc is not valid or is not island
+        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == '0'){
             return;
         }
-        visited[i][j] = true;
-        if (grid[i][j] == '1'){
-            for (int[] direction : directions){
-                dfs(i + direction[0], j + direction[1]);
-            }
+        // 2. visited array(flip to 0) to store if the cell has seen before
+        grid[i][j] = '0'; 
+        
+        // 3. traverse its neighbors
+        for (int[] direction : directions){
+            dfs(i + direction[0], j + direction[1]);
         }
     }
 }
