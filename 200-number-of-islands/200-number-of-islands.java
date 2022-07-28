@@ -1,36 +1,33 @@
 class Solution {
-    private int[][] directions = new int[][]{{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
-    private char[][] grid;
-    private boolean[][] seen;
+    int[][] directions = new int[][]{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    char[][] grid;
     
     public int numIslands(char[][] grid) {
-        // dfs: find all the directions of 1 and check if they are lands
+        // 1. dfs problem: nested for loop for each cell to check if it is 1
         this.grid = grid;
-        this.seen = new boolean[grid.length][grid[0].length];
-        
-        int count = 0;
-        for (int i = 0; i < grid.length; i++){
-            for (int j = 0; j < grid[0].length; j++){
-                if (seen[i][j]){
-                    continue;
-                }
+        int m = grid.length;
+        int n = grid[0].length;
+        int num = 0; // number of islands
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
                 if (grid[i][j] == '1'){
                     dfs(i, j);
-                    count++;
+                    num++;
                 }
             }
         }
-        // if yes, store in a seen array
-        // finish the process and count + 1
-        return count;
+        return num;
     }
     
-    // dfs process
     public void dfs(int i, int j){
-        if (i < 0|| j < 0|| i >= grid.length || j >= grid[0].length || seen[i][j] || grid[i][j] == '0'){
+        // if the loc is not valid or is not island
+        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == '0'){
             return;
         }
-        seen[i][j] = true;
+        // 2. visited array(flip to 0) to store if the cell has seen before
+        grid[i][j] = '0'; 
+        
+        // 3. traverse its neighbors
         for (int[] direction : directions){
             dfs(i + direction[0], j + direction[1]);
         }
