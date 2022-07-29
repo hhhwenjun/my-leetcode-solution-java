@@ -19,31 +19,23 @@ class Node {
 */
 
 class Solution {
-    // use hashmap to track visited, since we do not know how many nodes
-    private Map<Node, Node> visited = new HashMap<>();
-        
-    // use the dfs to traverse the node and neighbor lists + recursion
+    Node[] visited = new Node[101];
+    
     public Node cloneGraph(Node node) {
-        // consider the null case
-        if (node == null){
-            return node;
+        // use visited array to represent if we visited it before, based on val
+        // use dfs to traverse the curr node's neighbors
+        if (node == null) return null;
+        return dfs(node);
+    }
+    
+    public Node dfs(Node node){
+        if (visited[node.val] != null) return visited[node.val];
+        // get the node's neighbor list
+        visited[node.val] = new Node(node.val);
+        List<Node> neighbors = node.neighbors;
+        for (Node neighbor : neighbors){
+            visited[node.val].neighbors.add(dfs(neighbor));
         }
-        Stack<Node> stack = new Stack<>();
-        stack.add(node);
-        visited.put(node, new Node(node.val, new ArrayList<Node>()));
-        
-        while (!stack.isEmpty()){
-            Node current = stack.pop();
-            
-            for (Node neighbor : current.neighbors){
-                if (!visited.containsKey(neighbor)){
-                    visited.put(neighbor, new Node(neighbor.val, new ArrayList<Node>()));
-                    stack.add(neighbor);
-                }
-                // add the clone of the neighbor
-                visited.get(current).neighbors.add(visited.get(neighbor));
-            }
-        }
-        return visited.get(node);
+        return visited[node.val];
     }
 }
