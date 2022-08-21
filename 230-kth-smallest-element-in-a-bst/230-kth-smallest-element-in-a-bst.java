@@ -19,9 +19,7 @@ class Solution {
         List<Integer> treeList = new ArrayList<>();
         
         inorder(root, treeList);
-        // 2. sort the list
-        Collections.sort(treeList);
-        // 3. get the corresponding value in kth location
+        // 2. get the corresponding value in kth location
         return treeList.get(k - 1);
         
     }
