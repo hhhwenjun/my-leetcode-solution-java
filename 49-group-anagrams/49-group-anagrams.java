@@ -1,31 +1,29 @@
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
-        List<List<String>> res = new ArrayList<>();
-        // pattern (int[26]), list of strings, to count the occurence of letters
+        if (strs.length == 0) return new ArrayList();
         
-        Map<String, List<String>> pattern = new HashMap<>();
+        // use a hashmap to store the key and list of strings
+        // key: count of each character is string
+        Map<String, List<String>> res = new HashMap<>();
+        
+        int[] letter = new int[26];
         for (String str : strs){
-            int[] countMap = new int[26];
-            for (char ch : str.toCharArray()){
-                countMap[ch - 'a']++;
-            }
+            Arrays.fill(letter, 0);
+            // count the occurrence of each char
+            for (char ch : str.toCharArray()) letter[ch - 'a']++;
             StringBuilder key = new StringBuilder();
-            for (int i = 0; i < 26; i++){
+            for (int occr : letter) {
                 key.append("#");
-                key.append(countMap[i]);
+                key.append(occr);
             }
-            String keyString = key.toString();
-            if (!pattern.containsKey(keyString)){
-                pattern.put(keyString, new ArrayList<>());
+            
+            // put it to the hashmap
+            String keyStr = key.toString();
+            if (!res.containsKey(keyStr)){
+                res.put(keyStr, new ArrayList<String>());
             }
-            // meet the pattern, they should be grouped and put in result list
-            pattern.get(keyString).add(str);
+            res.get(keyStr).add(str);
         }
-        
-        // loop the map and store the string list to result list
-        for (Map.Entry<String, List<String>> entry : pattern.entrySet()){
-            res.add(entry.getValue());
-        }
-        return res;
+        return new ArrayList(res.values());
     }
 }
