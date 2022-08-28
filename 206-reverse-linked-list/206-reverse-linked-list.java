@@ -10,13 +10,16 @@
  */
 class Solution {
     public ListNode reverseList(ListNode head) {
-        if (head == null || head.next == null){
-            return head;
-        }
-        ListNode nextNode = reverseList(head.next);
+        return reverse(head);
+    }
+    
+    public ListNode reverse(ListNode head){
+        if (head == null || head.next == null) return head;
+        
+        // reverse the current part
+        ListNode prev = reverse(head.next);
         head.next.next = head;
         head.next = null;
-        
-        return nextNode;
+        return prev;
     }
 }
