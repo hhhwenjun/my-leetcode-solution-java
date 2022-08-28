@@ -10,20 +10,25 @@
  */
 class Solution {
     public ListNode swapPairs(ListNode head) {
-        return swap(head);
-    }
-    
-    // recursion method to swap the nodes
-    public ListNode swap(ListNode curr){
-        // base case
-        if (curr == null) return null;
-        if (curr.next == null) return curr;
+        // dummy node acts as the prevNode for the head node
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
         
-        // swap the nodes
-        ListNode nextNode = curr.next;
-        curr.next = nextNode.next;
-        nextNode.next = curr;
-        curr.next = swap(nextNode.next.next);
-        return nextNode;
+        ListNode prevNode = dummy;
+        while((head != null) && (head.next != null)){
+            // nodes to be swapped
+            ListNode firstNode = head;
+            ListNode secondNode = head.next;
+            
+            // swapping
+            prevNode.next = secondNode;
+            firstNode.next = secondNode.next;
+            secondNode.next = firstNode;
+            
+            // reinitializing the head and prev for next swap
+            prevNode = firstNode;
+            head = firstNode.next;
+        }
+        return dummy.next;
     }
 }
