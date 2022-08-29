@@ -1,34 +1,34 @@
 class Solution {
-    // use hashset for the sudoku
     public boolean isValidSudoku(char[][] board) {
-        int len = board.length;
+        Set<Character>[] rowSet = new Set[board.length];
+        Set<Character>[] colSet = new Set[board.length];
+        Set<Character>[] blockSet = new Set[board.length];
         
-        Set<Character>[] digitRowSet = new HashSet[len];
-        Set<Character>[] digitColSet = new HashSet[len];
-        Set<Character>[] digitBlockSet = new HashSet[len];
-        
-        for (int i = 0; i < len; i++){
-            digitRowSet[i] = new HashSet<Character>();
-            digitColSet[i] = new HashSet<Character>();
-            digitBlockSet[i] = new HashSet<Character>();
+        for (int i = 0; i < board.length; i++){
+            rowSet[i] = new HashSet<Character>();
+            colSet[i] = new HashSet<Character>();
+            blockSet[i] = new HashSet<Character>();
         }
         
+        // loop through the 2D array and put them into the set
         for (int i = 0; i < board.length; i++){
             for (int j = 0; j < board.length; j++){
                 if (board[i][j] == '.') continue;
+                // row set
+                if (rowSet[i].contains(board[i][j])) return false;
+                rowSet[i].add(board[i][j]);
                 
-                if (digitRowSet[i].contains(board[i][j])) return false;
-                digitRowSet[i].add(board[i][j]);
+                // col set
+                if (colSet[j].contains(board[i][j])) return false;
+                colSet[j].add(board[i][j]);
                 
-                if (digitColSet[j].contains(board[i][j])) return false;
-                digitColSet[j].add(board[i][j]);
+                // block set
+                int blockIndex = (i / 3) * 3 + j / 3;
+                if (blockSet[blockIndex].contains(board[i][j])) return false;
+                blockSet[blockIndex].add(board[i][j]);
                 
-                int index = (i / 3) * 3 + j / 3;
-                if (digitBlockSet[index].contains(board[i][j])) return false;
-                digitBlockSet[index].add(board[i][j]);
             }
         }
         return true;
     }
-    
 }
