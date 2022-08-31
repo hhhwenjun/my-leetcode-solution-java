@@ -1,13 +1,15 @@
 class Solution {
     public int fib(int n) {
+        int stepTwoAway = 0, stepOneAway = 1;
         if (n <= 1) return n;
+        int curr = 0;
         
-        // recursion
-        int[] fibArray = new int[n + 1];
-        fibArray[1] = 1;
         for (int i = 2; i <= n; i++){
-            fibArray[i] = fibArray[i - 1] + fibArray[i - 2];
+            curr = stepOneAway + stepTwoAway;
+            stepTwoAway = stepOneAway;
+            stepOneAway = curr;
+            
         }
-        return fibArray[n];
+        return curr;
     }
 }
