@@ -1,28 +1,26 @@
 class MinStack {
-    
-    private Deque<int[]> list;
+    Deque<Integer> stack;
 
     public MinStack() {
-        list = new LinkedList<>();
+        stack = new LinkedList<>();
     }
     
     public void push(int val) {
-        if (list.isEmpty()) list.addFirst(new int[]{val, val});
-        else {
-            list.addFirst(new int[]{val, Math.min(val, list.peekFirst()[1])});
-        }
+        stack.addLast(val);
     }
     
     public void pop() {
-        list.removeFirst();
+        stack.removeLast();
     }
     
     public int top() {
-        return list.peekFirst()[0];
+        return stack.peekLast();
     }
     
     public int getMin() {
-        return list.peekFirst()[1];
+        List<Integer> temp = new LinkedList<>(stack);
+        Collections.sort(temp);
+        return temp.get(0);
     }
 }
 
