@@ -1,27 +1,34 @@
 class Solution {
-    public int[][] imageSmoother(int[][] img) {
-        int[][] res = new int[img.length][img[0].length];
-        for (int i = 0; i < img.length; i++){
-            for (int j = 0; j < img[0].length; j++){
-                res[i][j] = calculateAverage(img, i, j);
+    private int[][] matrix;
+    private int rows;
+    private int columns;
+    
+    public int[][] imageSmoother(int[][] matrix) {
+        this.matrix = matrix;
+        this.rows = matrix.length;
+        this.columns = matrix[0].length;
+        int[][] smoothedImage = new int[rows][columns];
+        for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
+            for (int columnIndex = 0; columnIndex < columns; columnIndex++) {
+                smoothedImage[rowIndex][columnIndex] = smoothPixel(rowIndex, columnIndex);
             }
         }
-        return res;
+        return smoothedImage;
     }
     
-    public int calculateAverage(int[][] img, int i, int j){
-        int[][] directions = new int[][]{{-1, -1}, {-1, 0}, {0, 0}, {0, -1}, {-1, 1},
-                                         {1, 0}, {0, 1}, {1, 1}, {1, -1}};
-        // sum up the value
-        int sum = 0;
-        int n = 0; // how many elements count
-        for (int[] direction : directions){
-            int row = i + direction[0];
-            int col = j + direction[1];
-            if (row < 0 || row >= img.length || col < 0 || col >= img[0].length) continue;
-            sum += img[row][col];
-            n++;
+    private int smoothPixel(int rowIndex, int columnIndex) {
+        int sumOfPixelValues = 0;
+        int numberOfNeighbors = 0;
+        for (int modifiedRowIndex = Math.max(0, rowIndex - 1); 
+             modifiedRowIndex <= Math.min(rows - 1, rowIndex + 1); 
+             modifiedRowIndex++) {
+            for (int modifiedColumnIndex = Math.max(0, columnIndex - 1); 
+                 modifiedColumnIndex <= Math.min(columns - 1, columnIndex + 1); 
+                 modifiedColumnIndex++) {
+                sumOfPixelValues += matrix[modifiedRowIndex][modifiedColumnIndex];
+                numberOfNeighbors++;
+            }
         }
-        return (int) (sum / n);
+        return sumOfPixelValues / numberOfNeighbors;
     }
 }
