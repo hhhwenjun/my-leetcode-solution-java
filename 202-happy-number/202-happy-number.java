@@ -1,22 +1,19 @@
 class Solution {
     public boolean isHappy(int n) {
-        Set<Integer> numberSet = new HashSet<>();
-        boolean happy = false;
-        numberSet.add(n);
-        int num = n;
-        while(!happy){
+        // loops in a cycle: use hashset
+        Set<Integer> set = new HashSet<>();
+        int curr = n;
+        while(curr != 1){
+            if (set.contains(curr)) return false;
+            set.add(curr);
+            // calculate the sum of the squares
             int sum = 0;
-            while(num != 0){
-                int digit = num % 10;
+            while(curr > 0){
+                int digit = curr % 10;
+                curr /= 10;
                 sum += digit * digit;
-                num = num / 10;
             }
-            if (sum == 1) return true;
-            if (numberSet.contains(sum)){
-                return false;
-            }
-            numberSet.add(sum);
-            num = sum;
+            curr = sum;
         }
         return true;
     }
