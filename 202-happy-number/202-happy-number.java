@@ -1,20 +1,23 @@
 class Solution {
     public boolean isHappy(int n) {
-        int slow = n, fast = next(n);
+        // unhappy number ends in a cycle
+        // detect cycle by hare and turtle algorithm
+        int slow = n, fast = sumOfSquares(sumOfSquares(n));
         while(n != 1 && slow != fast){
-            slow = next(slow);
-            fast = next(next(fast));
+            slow = sumOfSquares(slow);
+            fast = sumOfSquares(sumOfSquares(fast));
         }
         return slow == 1;
     }
     
-    public int next(int n){
-        int curr = n;
+    public int sumOfSquares(int n){
         int sum = 0;
-        while(curr > 0){
-            int digit = curr % 10;
-            curr /= 10;
+        while(n > 0){
+            // get the digit of n
+            int digit = n % 10;
             sum += digit * digit;
+            // get the next digit of n
+            n /= 10;
         }
         return sum;
     }
