@@ -1,31 +1,26 @@
 class Solution {
     public void sortColors(int[] nums) {
-        // count the number of 0, 1, 2 in nums
-        int zero = 0, one = 0, two = 0;
-        for (int num : nums){
-            if (num == 0){
-                zero++;
-            } else if (num == 1){
-                one++;
-            } else {
-                two++;
+        // three-pointers solution:
+        // 1. end of zero area, curr, start of two area
+        // 2. swap to zero area, swap to two area
+        int endZero = 0, curr = 0, startTwo = nums.length - 1;
+        while(curr <= startTwo){
+            if (nums[curr] == 0){
+                swap(nums, curr, endZero);
+                endZero++;
+                curr++;
             }
+            else if (nums[curr] == 2){
+                swap(nums, curr, startTwo);
+                startTwo--;
+            }
+            else curr++;
         }
-        // modify the number based on order of 0, 1, 2 
-        for (int i = 0; i < nums.length; i++){
-            if (zero > 0){
-                nums[i] = 0;
-                zero--;
-            }
-            else if (one > 0){
-                nums[i] = 1;
-                one--;
-            }
-            else {
-                nums[i] = 2;
-                two--;
-            }
-        }
-        
+    }
+    
+    public void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 }
