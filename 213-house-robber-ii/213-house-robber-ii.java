@@ -1,24 +1,24 @@
 class Solution {
-
     public int rob(int[] nums) {
-        // use house rubber solution twice
-        // if edge cases
+        // edge cases, no house or only 1 house
         if (nums.length == 0) return 0;
         if (nums.length == 1) return nums[0];
         
-        int max1 = robHelper(nums, 0, nums.length - 2);
-        int max2 = robHelper(nums, 1, nums.length - 1);
-        return Math.max(max1, max2);
+        // either start on 0th house or the 1st house
+        int sum1 = robMoney(nums, 0, nums.length - 2);
+        int sum2 = robMoney(nums, 1, nums.length - 1);
+        return Math.max(sum1, sum2);
     }
     
-    // dynamic programming, memoization
-    public int robHelper(int[] nums, int start, int end){
-        int benefit1 = 0, benefit2 = 0;
+    public int robMoney(int[] nums, int start, int end){
+        int gain1 = 0, gain2 = 0;
+        int temp = 0;
+        
         for (int i = start; i <= end; i++){
-            int temp = benefit1;
-            benefit1 = Math.max(nums[i] + benefit2, benefit1); // current - 1 day
-            benefit2 = temp; // current - 2 day
+            temp = gain1;
+            gain1 = Math.max(nums[i] + gain2, gain1);
+            gain2 = temp;
         }
-        return benefit1;
+        return gain1;
     }
 }
