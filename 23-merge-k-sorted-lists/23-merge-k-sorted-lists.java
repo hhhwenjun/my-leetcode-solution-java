@@ -10,35 +10,25 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        // each time compare the listnode pointer
-        // find the max length of the new list
-        int length = 0;
-        for (ListNode list : lists){
-            ListNode curr = list;
-            while(curr != null){
-                curr = curr.next;
-                length++;
+        List<Integer> l = new ArrayList<Integer>();
+   
+        for (ListNode ln : lists) {
+            while (ln != null) {
+                l.add(ln.val);
+                ln = ln.next;
             }
         }
-        int currListLength = 0;
-        ListNode dummyHead = new ListNode();
-        ListNode curr = dummyHead;
-        while(currListLength < length){
-            int min = Integer.MAX_VALUE;
-            ListNode minNode = new ListNode();
-            int minIndex = 0;
-            for (int i = 0; i < lists.length; i++){
-                if (lists[i] != null && lists[i].val < min){
-                    min = lists[i].val;
-                    minNode = lists[i];
-                    minIndex = i;
-                }
-            }
-            curr.next = minNode;
-            curr = curr.next;
-            currListLength++;
-            if (lists[minIndex] != null) lists[minIndex] = lists[minIndex].next;
+
+        Collections.sort(l);
+
+        ListNode head = new ListNode(0);
+        ListNode h = head;
+        for (int i : l) {
+            ListNode t = new ListNode(i);
+            h.next = t;
+            h = h.next;
         }
-        return dummyHead.next;
+        h.next = null;
+        return head.next;
     }
 }
