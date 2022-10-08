@@ -1,12 +1,17 @@
 class Solution {
     public boolean canAttendMeetings(int[][] intervals) {
-        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
-        int prev = 0;
+        // use priority queue
+        if (intervals.length == 0) return true;
+        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> a[0] - b[0]);
         for (int[] interval : intervals){
-            int start = interval[0];
-            int end = interval[1];
-            if (start < prev) return false;
-            prev = end;
+            queue.add(interval);
+        }
+        int prev = queue.peek()[0];
+        while(queue.size() > 0){
+            // poll them out and check time
+            int[] curr = queue.poll();
+            if (prev > curr[0]) return false;
+            prev = curr[1];
         }
         return true;
     }
