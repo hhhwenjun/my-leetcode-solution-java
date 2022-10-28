@@ -21,6 +21,7 @@ class Solution {
         // backtracking
         for (int i = index; i < candidates.length; i++){
             if (i > index && candidates[i] == candidates[i - 1]) continue;
+            if (target < candidates[i]) break;
             subset.add(candidates[i]);
             backtracking(i + 1, target - candidates[i], subset);
             subset.remove(subset.size() - 1);
