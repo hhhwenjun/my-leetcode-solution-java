@@ -1,24 +1,9 @@
 class Solution {
-    public boolean checkValid(int[][] matrix) {
-        int length = matrix.length;
-        
-        Set<Integer>[] rowSet = new HashSet[length];
-        Set<Integer>[] colSet = new HashSet[length];
-        
-        for (int j = 0; j < length; j++){
-            rowSet[j] = new HashSet<Integer>();
-            colSet[j] = new HashSet<Integer>();
+    public boolean checkValid(int[][] m) {
+            Set< String > set = new HashSet<>();
+            for ( int i = 0; i < m.length; i++ )
+                for ( int j = 0; j < m.length; j++ )
+                    if (!set.add(m[i][j]+"r"+i) || !set.add(m[i][j] +"c"+j)) return false;
+            return true;
         }
-        
-        for (int i = 0; i < length; i++){
-            for (int j = 0; j < length; j++){
-                if (rowSet[i].contains(matrix[i][j])) return false;
-                rowSet[i].add(matrix[i][j]);
-                
-                if (colSet[j].contains(matrix[i][j])) return false;
-                colSet[j].add(matrix[i][j]);
-            }
-        }
-        return true;
-    }
 }
