@@ -1,24 +1,20 @@
 class Solution {
     public int[][] merge(int[][] intervals) {
-        // use a stack to store the intervals, and compare with the latest one
-        // 1. sort the intervals by the start
-        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
-        
-        // 2. create a list to use it as a stack
-        LinkedList<int[]> stack = new LinkedList<>();
-        
-        for (int[] interval : intervals){
-            if (stack.isEmpty() || stack.getLast()[1] < interval[0]){
-                stack.add(interval);
-                continue;
+        //Lamda expression to sort based on first index of 2-d array
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+        List<int[]> list = new ArrayList<int[]>();
+        int min_x = intervals[0][0];
+        int max_y = intervals[0][1];
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] <= max_y) {
+                max_y = Math.max(max_y, intervals[i][1]);
+            } else {
+                list.add(new int[]{min_x, max_y});
+                min_x = intervals[i][0];
+                max_y = intervals[i][1];
             }
-            // merge the interval
-            stack.getLast()[1] = Math.max(stack.getLast()[1], interval[1]);
         }
-        int[][] res = new int[stack.size()][2];
-        for (int i = 0; i < stack.size(); i++){
-            res[i] = stack.get(i);
-        }
-        return res;
+        list.add(new int[]{min_x, max_y});
+        return list.toArray(new int[list.size()][]);
     }
 }
